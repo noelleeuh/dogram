@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+    <title>Welcome to my Imageboard!</title>
+    <link rel='stylesheet' href='display.css'/>
+</head>
+<body>
+    <header>🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕</header>
+    <h1><img src = 'assets/dogram.png'></h1>
+    <div id='main'>
+        <form class='uploadForm'>
+            <input v-model='form.title' type='text' name='title' placeholder='Title'> &nbsp;
+            <input v-model='form.description' type='text' name='description' placeholder='Description'> &nbsp;
+            <input v-model='form.username' type='text' name='username' placeholder='Username'> &nbsp;
+            <label>Choose file<input @change = 'handleFileChange' type='file' accept = 'image/*' name='file'></label>
+            <button @click = 'uploadFile'>Upload</button>
+        </form>
+        <div class='allPics'>
+            <a v-for = 'key in images':href="'#' + key.id" @click='displayImg(key.id)'>
+                <img :src = 'key.url' height="250" width="250">
+            </a>
+
+            <p v-if = 'images.length === 0'>No images...</p>
+        </div>
+        <modalicious v-if='currentImg' :id='currentImg' @close='closeImg'></modalicious>
+        <button v-if='morePics' @click='showNextPics'>Next</button>
+    </div>
+    <footer>🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕 🐶 🐕</footer>
+    <script type='text/x-template' id='modal-template'>
+        <div class='modalicious'>
+            <a class='exitModal' href='#' v-on:click='exit'><h1>❌&nbsp;&nbsp;&nbsp;</h1></a>
+            <div class='block'>
+                <div class='sideA'>
+                    <div v-bind:class = 'id'>
+                        <img :src = 'img.url' height="350" width="350">
+                        <h3 id='title'>{{img.title}}</h3>
+                        <p id='desc'><strong>{{img.description}}</strong></p>
+                        <p id='date'><i>Posted on {{img.date}} by {{img.username}}</i></p>
+                    </div>
+                </div>
+                <div class='sideB'>
+                    <div class='commentForm'>
+                        <input v-model='txt.comment' type='text' name='comment' placeholder='Comment'> <br>
+                        <input v-model='txt.username' type='text' name='username' placeholder='Username'> <br>
+                        <button @click = 'commentSend' type='button'>Send</button>
+                    </div>
+                    <div class='allImgComments'>
+                        <div v-for = 'key in allComments'>
+                            <p><strong>{{key.username}}</strong> {{key.comment}}</p>
+                        </div>
+                        <p v-if = 'allComments.length === 0' style='color: violet'>No comments...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script src="/js/vue.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>
